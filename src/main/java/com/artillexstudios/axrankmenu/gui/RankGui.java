@@ -1,0 +1,126 @@
+package com.artillexstudios.axrankmenu.gui;
+
+import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
+import com.artillexstudios.axapi.utils.ItemBuilder;
+import com.artillexstudios.axapi.utils.NumberUtils;
+import com.artillexstudios.axapi.utils.StringUtils;
+import com.artillexstudios.axrankmenu.hooks.HookManager;
+import com.artillexstudios.axrankmenu.utils.PlaceholderUtils;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.node.Node;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
+import static com.artillexstudios.axrankmenu.AxRankMenu.LANG;
+import static com.artillexstudios.axrankmenu.AxRankMenu.MESSAGEUTILS;
+
+public class RankGui {
+
+    public void openFor(@NotNull Player player) {
+        final Gui menu = Gui.gui()
+                .title(StringUtils.format(CONFIG.getString("menu.title")))
+                .rows(CONFIG.getInt("menu.rows", 6))
+                .disableAllInteractions()
+                .create();
+
+        for (String str : CONFIG.getSection("menu").getRoutesAsStrings(false)) {
+            if (str.equals("title") || str.equals("rows")) continue;
+
+            if (CONFIG.getString("menu." + str + ".rank") == null) {
+                final ItemStack it = new ItemBuilder(CONFIG.getSection("menu." + str + ".item")).get();
+                final GuiItem item = new GuiItem(it);
+
+                menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+            } else {
+                LuckPerms lpApi = LuckPermsProvider.get();
+                final String groupName = CONFIG.getString("menu." + str + ".rank");
+                final Group group = lpApi.getGroupManager().getGroup(groupName);
+                if (group == null) {
+                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF0000[AxRankMenu] The group %group% does not exist!".replace("%group%", groupName)));
+                    continue;
+                }
+
+                final List<String> lore = new ArrayList<>();
+
+                // TODO: make lore
+                for (String line : CONFIG.getStringList("menu." + str + ".item.lore")) {
+                    if (line.contains("%permission%")) {
+                        LANG.getBackingDocument().setGeneralSettings(GeneralSettings.builder().setRouteSeparator('倀').build());
+                        for (Node node : group.getNodes()) {
+                            if (node.isNegated()) continue;
+
+                            if (!CONFIG.getBoolean("include-global-permissions") && !node.getContexts().equals(lpApi.getContextManager().getStaticContext())) continue;
+                            if (CONFIG.getBoolean("include-global-permissions") && !node.getContexts().isEmpty() && !node.getContexts().equals(lpApi.getContextManager().getStaticContext())) continue;
+                            String permission = node.getKey();
+
+                            Integer number = null;
+                            for (String t1 : permission.split("\\.")) {
+                                if (!NumberUtils.isInt(t1)) continue;
+                                number = Integer.parseInt(t1);
+                            }
+
+                            permission = permission.replace("" + number, "#");
+
+                            if (LANG.getString("permissions倀" + permission) == null) {
+                                LANG.set("permissions倀" + permission, permission);
+                                LANG.save();
+                            }
+
+                            // TODO: handle numbers
+                            String tName = LANG.getString("permissions倀" + permission);
+                            if (tName.isEmpty()) continue;
+                            lore.add(PlaceholderUtils.parsePlaceholders(line.replace("%permission%", tName.replace("#", "" + number)), CONFIG.getSection("menu." + str)));
+                        }
+                        LANG.getBackingDocument().setGeneralSettings(GeneralSettings.builder().setRouteSeparator('.').build());
+                    } else {
+                        lore.add(PlaceholderUtils.parsePlaceholders(line, CONFIG.getSection("menu." + str)));
+                    }
+                }
+
+                final ItemStack it = new ItemBuilder(CONFIG.getSection("menu." + str + ".item")).get();
+                final ItemMeta meta = it.getItemMeta();
+                meta.setLore(lore);
+                it.setItemMeta(meta);
+
+                final GuiItem item = new GuiItem(it, event -> {
+                    double price = CONFIG.getDouble("menu." + str + ".price");
+
+                    if (HookManager.getCurrency() == null) return;
+                    if (HookManager.getCurrency().getBalance(player) < price) {
+                        MESSAGEUTILS.sendLang(player, "no-currency");
+                        return;
+                    }
+
+                    HookManager.getCurrency().takeBalance(player, price);
+
+                    for (String action : CONFIG.getStringList("menu." + str + ".buy-actions")) {
+                        final String[] type = action.split(" ");
+                        String ac = action.replace(type[0] + " ", "");
+                        ac = ac.replace("%player%", player.getName());
+
+                        switch (type[0]) {
+                            case "[MESSAGE]" -> player.sendMessage(StringUtils.formatToString(ac));
+                            case "[CONSOLE]" -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ac);
+                            case "[CLOSE]" -> player.closeInventory();
+                        }
+                    }
+                });
+
+                menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+            }
+        }
+
+        menu.open(player);
+    }
+}
