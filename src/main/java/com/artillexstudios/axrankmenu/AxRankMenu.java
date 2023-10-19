@@ -12,8 +12,15 @@ import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axrankmenu.commands.MainCommand;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public final class AxRankMenu extends AxPlugin {
     private static AxPlugin instance;
@@ -38,9 +45,6 @@ public final class AxRankMenu extends AxPlugin {
 
         final MainCommand command = new MainCommand();
         this.getCommand("axrankmenu").setExecutor(command);
-//        for (String str : CONFIG.getStringList("command-aliases")) {
-//            this.getCommand(str).setExecutor(command);
-//        }
 
         new HookManager().updateHooks();
     }

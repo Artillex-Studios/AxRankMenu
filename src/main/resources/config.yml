@@ -6,6 +6,8 @@ menu:
   VIP:
     # the name of the rank
     rank: "VIP"
+    # set to "" to use the current server
+    server: ""
     # the price of the rank (check the hooks section)
     price: 1000.0
     # where the item should be in the /ranks gui?
@@ -25,15 +27,6 @@ menu:
       - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
       - "[CONSOLE] lp user %player% parent set VIP"
       - "[CLOSE] menu"
-
-# the command aliases will only update after a restart
-command-aliases:
-  - axrankmenu
-  - axranks
-  - ranks
-  - axrank
-  - rankmenu
-  - ranksmenu
 
 hooks:
   # values: Vault, PlayerPoints, CoinsEngine, RoyaleEconomy, custom

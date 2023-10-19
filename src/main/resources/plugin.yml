@@ -9,6 +9,13 @@ depend:
 commands:
   axrankmenu:
     usage: /<command>
+    aliases:
+      - axranks
+      - ranks
+      - axrank
+      - rankmenu
+      - ranksmenu
+      - rank
 
 permissions:
   axrankmenu.reload:

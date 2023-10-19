@@ -10,6 +10,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.context.ImmutableContextSet;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
@@ -53,15 +54,19 @@ public class RankGui {
 
                 final List<String> lore = new ArrayList<>();
 
-                // TODO: make lore
                 for (String line : CONFIG.getStringList("menu." + str + ".item.lore")) {
                     if (line.contains("%permission%")) {
                         LANG.getBackingDocument().setGeneralSettings(GeneralSettings.builder().setRouteSeparator('倀').build());
                         for (Node node : group.getNodes()) {
                             if (node.isNegated()) continue;
 
-                            if (!CONFIG.getBoolean("include-global-permissions") && !node.getContexts().equals(lpApi.getContextManager().getStaticContext())) continue;
-                            if (CONFIG.getBoolean("include-global-permissions") && !node.getContexts().isEmpty() && !node.getContexts().equals(lpApi.getContextManager().getStaticContext())) continue;
+                            ImmutableContextSet set = lpApi.getContextManager().getStaticContext();
+                            if (!CONFIG.getString("menu." + str + ".server", "").isEmpty()) {
+                                set = ImmutableContextSet.of("server", CONFIG.getString("menu." + str + ".server"));
+                            }
+
+                            if (!CONFIG.getBoolean("include-global-permissions") && !node.getContexts().equals(set)) continue;
+                            if (CONFIG.getBoolean("include-global-permissions") && !node.getContexts().isEmpty() && !node.getContexts().equals(set)) continue;
                             String permission = node.getKey();
 
                             Integer number = null;
@@ -77,7 +82,6 @@ public class RankGui {
                                 LANG.save();
                             }
 
-                            // TODO: handle numbers
                             String tName = LANG.getString("permissions倀" + permission);
                             if (tName.isEmpty()) continue;
                             lore.add(PlaceholderUtils.parsePlaceholders(line.replace("%permission%", tName.replace("#", "" + number)), CONFIG.getSection("menu." + str)));
@@ -98,7 +102,7 @@ public class RankGui {
 
                     if (HookManager.getCurrency() == null) return;
                     if (HookManager.getCurrency().getBalance(player) < price) {
-                        MESSAGEUTILS.sendLang(player, "no-currency");
+                        MESSAGEUTILS.sendLang(player, "buy.no-currency");
                         return;
                     }
 
@@ -108,6 +112,10 @@ public class RankGui {
                         final String[] type = action.split(" ");
                         String ac = action.replace(type[0] + " ", "");
                         ac = ac.replace("%player%", player.getName());
+                        ac = ac.replace("%name%", CONFIG.getString("menu." + str + ".item.name"));
+                        ac = ac.replace("%rank%", CONFIG.getString("menu." + str + ".rank"));
+                        ac = ac.replace("%price%", CONFIG.getString("menu." + str + ".price"));
+                        ac = ac.replace("%server%", CONFIG.getString("menu." + str + ".server"));
 
                         switch (type[0]) {
                             case "[MESSAGE]" -> player.sendMessage(StringUtils.formatToString(ac));
