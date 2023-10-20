@@ -98,8 +98,9 @@ public class RankGui {
                 it.setItemMeta(meta);
 
                 final GuiItem item = new GuiItem(it, event -> {
-                    double price = CONFIG.getDouble("menu." + str + ".price");
+                    double price = CONFIG.getDouble("menu." + str + ".price", -1);
 
+                    if (price == -1) return;
                     if (HookManager.getCurrency() == null) return;
                     if (HookManager.getCurrency().getBalance(player) < price) {
                         MESSAGEUTILS.sendLang(player, "buy.no-currency");
@@ -114,7 +115,7 @@ public class RankGui {
                         ac = ac.replace("%player%", player.getName());
                         ac = ac.replace("%name%", CONFIG.getString("menu." + str + ".item.name"));
                         ac = ac.replace("%rank%", CONFIG.getString("menu." + str + ".rank"));
-                        ac = ac.replace("%price%", CONFIG.getString("menu." + str + ".price"));
+                        ac = ac.replace("%price%", CONFIG.getString("menu." + str + ".price", "---"));
                         ac = ac.replace("%server%", CONFIG.getString("menu." + str + ".server"));
 
                         switch (type[0]) {
