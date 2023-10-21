@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 import static com.artillexstudios.axrankmenu.AxRankMenu.LANG;
@@ -42,7 +43,12 @@ public class RankGui {
                 final ItemStack it = new ItemBuilder(CONFIG.getSection("menu." + str + ".item")).get();
                 final GuiItem item = new GuiItem(it);
 
-                menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+                final List<Integer> slots = CONFIG.getBackingDocument().getIntList("menu." + str + ".slot");
+
+                if (slots.isEmpty())
+                    menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+                else
+                    menu.setItem(slots, item);
             } else {
                 LuckPerms lpApi = LuckPermsProvider.get();
                 final String groupName = CONFIG.getString("menu." + str + ".rank");
@@ -126,7 +132,14 @@ public class RankGui {
                     }
                 });
 
-                menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+//                menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+
+                final List<Integer> slots = CONFIG.getBackingDocument().getIntList("menu." + str + ".slot");
+
+                if (slots.isEmpty())
+                    menu.setItem(CONFIG.getInt("menu." + str + ".slot"), item);
+                else
+                    menu.setItem(slots, item);
             }
         }
 

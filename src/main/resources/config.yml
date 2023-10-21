@@ -27,6 +27,11 @@ menu:
       - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
       - "[CONSOLE] lp user %player% parent set VIP"
       - "[CLOSE] menu"
+  SOME-DECORATION:
+    slot: [9, 18, 27, 36, 45, 8, 17, 26, 35, 44]
+    item:
+      type: "WHITE_STAINED_GLASS_PANE"
+      name: " "
 
 hooks:
   # values: Vault, PlayerPoints, CoinsEngine, RoyaleEconomy, custom
