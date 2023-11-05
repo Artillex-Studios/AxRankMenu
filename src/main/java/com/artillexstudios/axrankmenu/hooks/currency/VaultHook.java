@@ -18,6 +18,11 @@ public class VaultHook implements CurrencyHook {
     }
 
     @Override
+    public String getName() {
+        return "Vault";
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         return econ.getBalance(p);
     }

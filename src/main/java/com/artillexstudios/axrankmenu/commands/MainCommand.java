@@ -17,7 +17,7 @@ import static com.artillexstudios.axrankmenu.AxRankMenu.MESSAGEUTILS;
 public class MainCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("axrankmenu.reload")) {
 
             if (!CONFIG.reload()) {

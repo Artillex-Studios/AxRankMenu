@@ -16,6 +16,11 @@ public class CoinsEngineHook implements CurrencyHook {
     }
 
     @Override
+    public String getName() {
+        return "CoinsEngine";
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         if (currency == null) return 0;
         return CoinsEngineAPI.getBalance(p, currency);

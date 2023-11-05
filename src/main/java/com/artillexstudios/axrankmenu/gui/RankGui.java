@@ -5,6 +5,7 @@ import com.artillexstudios.axapi.utils.ItemBuilder;
 import com.artillexstudios.axapi.utils.NumberUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
+import com.artillexstudios.axrankmenu.hooks.currency.CurrencyHook;
 import com.artillexstudios.axrankmenu.utils.PlaceholderUtils;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
@@ -21,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 import static com.artillexstudios.axrankmenu.AxRankMenu.LANG;
@@ -50,7 +50,7 @@ public class RankGui {
                 else
                     menu.setItem(slots, item);
             } else {
-                LuckPerms lpApi = LuckPermsProvider.get();
+                final LuckPerms lpApi = LuckPermsProvider.get();
                 final String groupName = CONFIG.getString("menu." + str + ".rank");
                 final Group group = lpApi.getGroupManager().getGroup(groupName);
                 if (group == null) {
@@ -105,15 +105,19 @@ public class RankGui {
 
                 final GuiItem item = new GuiItem(it, event -> {
                     double price = CONFIG.getDouble("menu." + str + ".price", -1);
+                    final String currency = CONFIG.getString("menu." + str + ".currency", "Vault");
 
                     if (price == -1) return;
-                    if (HookManager.getCurrency() == null) return;
-                    if (HookManager.getCurrency().getBalance(player) < price) {
+
+                    final CurrencyHook hook = HookManager.getCurrencyHook(currency);
+                    if (hook == null) return;
+
+                    if (hook.getBalance(player) < price) {
                         MESSAGEUTILS.sendLang(player, "buy.no-currency");
                         return;
                     }
 
-                    HookManager.getCurrency().takeBalance(player, price);
+                    hook.takeBalance(player, price);
 
                     for (String action : CONFIG.getStringList("menu." + str + ".buy-actions")) {
                         final String[] type = action.split(" ");

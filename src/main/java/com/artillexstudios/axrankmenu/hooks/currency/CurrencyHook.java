@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 public interface CurrencyHook {
     void setup();
 
+    String getName();
+
     double getBalance(Player p);
 
     void giveBalance(Player p, double amount);

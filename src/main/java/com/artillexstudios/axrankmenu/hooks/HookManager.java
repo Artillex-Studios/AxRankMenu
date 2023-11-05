@@ -11,66 +11,78 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 
 public class HookManager {
-    private static CurrencyHook currency = null;
+    private static final HashSet<CurrencyHook> currency = new HashSet<>();
+    private static PlaceholderAPIHook papi = null;
 
     public void updateHooks() {
-        final String eco = CONFIG.getString("hooks.economy-plugin").toUpperCase();
-        switch (eco) {
-            case "VAULT" -> {
-                if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                    currency = new VaultHook();
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into Vault!"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Vault is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
-                }
-            }
-
-            case "PLAYERPOINTS" -> {
-                if (Bukkit.getPluginManager().getPlugin("PlayerPoints") != null) {
-                    currency = new PlayerPointsHook();
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into PlayerPoints!"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] PlayerPoints is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
-                }
-            }
-
-            case "COINSENGINE" -> {
-                if (Bukkit.getPluginManager().getPlugin("CoinsEngine") != null) {
-                    currency = new CoinsEngineHook();
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into CoinsEngine!"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] CoinsEngine is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
-                }
-            }
-
-            case "ROYALEECONOMY" -> {
-                if (Bukkit.getPluginManager().getPlugin("RoyaleEconomy") != null) {
-                    currency = new RoyaleEconomyHook();
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into RoyaleEconomy!"));
-                } else {
-                    Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] RoyaleEconomy is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
-                }
-            }
+        if (CONFIG.getBoolean("hooks.Vault.register", true) && Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            currency.add(new VaultHook());
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into Vault!"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Vault is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
         }
-        if (currency != null)
-            currency.setup();
+        
+        if (CONFIG.getBoolean("hooks.PlayerPoints.register", true) && Bukkit.getPluginManager().getPlugin("PlayerPoints") != null) {
+            currency.add(new PlayerPointsHook());
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into PlayerPoints!"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] PlayerPoints is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
+        }
+        
+        if (CONFIG.getBoolean("hooks.CoinsEngine.register", true) && Bukkit.getPluginManager().getPlugin("CoinsEngine") != null) {
+            currency.add(new CoinsEngineHook());
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into CoinsEngine!"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] CoinsEngine is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
+        }
+        
+        if (CONFIG.getBoolean("hooks.RoyaleEconomy.register", true) && Bukkit.getPluginManager().getPlugin("RoyaleEconomy") != null) {
+            currency.add(new RoyaleEconomyHook());
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into RoyaleEconomy!"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] RoyaleEconomy is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
+        }
+        
+        for (CurrencyHook hook : currency) hook.setup();
 
-        if (getCurrency() == null) {
+        if (currency.isEmpty()) {
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Currency hook not found! Please check your config.yml!"));
+        }
+
+        if (CONFIG.getBoolean("hooks.PlaceholderAPI.register", true) && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            papi = new PlaceholderAPIHook();
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into PlaceholderAPI!"));
         }
     }
     
     @SuppressWarnings("unused")
     public static void registerCurrencyHook(@NotNull Plugin plugin, @NotNull CurrencyHook currencyHook) {
-        currency = currencyHook;
+        currency.add(currencyHook);
         Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into " + plugin.getName() + "! Note: You must set the currency provider to CUSTOM or it will be overridden after reloading!"));
     }
 
-    @Nullable
-    public static CurrencyHook getCurrency() {
+    @NotNull
+    public static HashSet<CurrencyHook> getCurrency() {
         return currency;
+    }
+
+    @Nullable
+    public static CurrencyHook getCurrencyHook(@NotNull String name) {
+        for (CurrencyHook hook : currency) {
+            if (!hook.getName().equals(name)) continue;
+            return hook;
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static PlaceholderAPIHook getPapi() {
+        return papi;
     }
 }

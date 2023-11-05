@@ -10,8 +10,10 @@ import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.loader.Lo
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.updater.UpdaterSettings;
 import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axrankmenu.commands.MainCommand;
+import com.artillexstudios.axrankmenu.commands.TabComplete;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 
@@ -38,6 +40,7 @@ public final class AxRankMenu extends AxPlugin {
 
         final MainCommand command = new MainCommand();
         this.getCommand("axrankmenu").setExecutor(command);
+        Bukkit.getPluginCommand("axrankmenu").setTabCompleter(new TabComplete());
 
         new HookManager().updateHooks();
     }
