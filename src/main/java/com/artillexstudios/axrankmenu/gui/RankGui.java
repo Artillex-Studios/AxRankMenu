@@ -129,9 +129,9 @@ public class RankGui {
                         ac = ac.replace("%server%", CONFIG.getString("menu." + str + ".server"));
 
                         switch (type[0]) {
-                            case "[MESSAGE]" -> player.sendMessage(StringUtils.formatToString(ac));
-                            case "[CONSOLE]" -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ac);
-                            case "[CLOSE]" -> player.closeInventory();
+                            case "[MESSAGE]": player.sendMessage(StringUtils.formatToString(ac)); break;
+                            case "[CONSOLE]": Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ac); break;
+                            case "[CLOSE]": player.closeInventory(); break;
                         }
                     }
                 });

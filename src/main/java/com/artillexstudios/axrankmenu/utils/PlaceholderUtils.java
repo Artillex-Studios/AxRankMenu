@@ -16,7 +16,7 @@ public class PlaceholderUtils {
 
         LuckPerms lpApi = LuckPermsProvider.get();
         ImmutableContextSet set = lpApi.getContextManager().getStaticContext();
-        string = string.replace("%server%", section.getString("server").equals("") ? set.getAnyValue("server").get() : section.getString("server"));
+        string = string.replace("%server%", (section.getString("server").equals("") && set.getAnyValue("server").isPresent()) ? set.getAnyValue("server").get() : section.getString("server"));
 
         if (HookManager.getPapi() != null)
             string = HookManager.getPapi().parsePlaceholders(string);
