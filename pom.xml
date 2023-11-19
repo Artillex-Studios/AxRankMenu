@@ -6,7 +6,7 @@
 
   <groupId>com.artillexstudios</groupId>
   <artifactId>AxRankMenu</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
 
   <name>AxRankMenu</name>
@@ -39,6 +39,10 @@
             </goals>
             <configuration>
                 <relocations>
+                    <relocation>
+                        <pattern>com.artillexstudios.axapi</pattern>
+                        <shadedPattern>com.artillexstudios.axrankmenu.libs.axapi</shadedPattern>
+                    </relocation>
                     <relocation>
                         <pattern>org.bstats</pattern>
                         <shadedPattern>com.artillexstudios.axrankmenu.libs.bstats</shadedPattern>
