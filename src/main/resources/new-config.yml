@@ -1,0 +1,13 @@
+# work in progress!
+
+# the plugin will not let the player buy ranks out of order
+# the order is based in the rank's WEIGHT (weight.<VALUE> permission)
+force-buy-order: false
+
+# if true: every rank's price will be calculated like this: new rank's price - current rank's price
+# NOTE: unless prevent-downgrading is true this will mean what players can freely downgrade their ranks
+discount-ranks: false
+
+# the plugin will stop players from buying worse ranks than their current one
+# you must set every rank a WEIGHT (weight.<VALUE> permission) to enable
+prevent-downgrading: false

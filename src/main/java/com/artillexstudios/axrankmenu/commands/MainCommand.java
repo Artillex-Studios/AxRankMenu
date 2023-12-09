@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
@@ -21,12 +22,12 @@ public class MainCommand implements CommandExecutor {
         if (args.length == 1 && args[0].equalsIgnoreCase("reload") && sender.hasPermission("axrankmenu.reload")) {
 
             if (!CONFIG.reload()) {
-                MESSAGEUTILS.sendLang(sender, "reload.failed", Map.of("%file%", "tiers.yml"));
+                MESSAGEUTILS.sendLang(sender, "reload.failed", Collections.singletonMap("%file%", "tiers.yml"));
                 return true;
             }
 
             if (!LANG.reload()) {
-                MESSAGEUTILS.sendLang(sender, "reload.failed", Map.of("%file%", "lang.yml"));
+                MESSAGEUTILS.sendLang(sender, "reload.failed", Collections.singletonMap("%file%", "lang.yml"));
                 return true;
             }
 

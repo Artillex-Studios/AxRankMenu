@@ -13,7 +13,7 @@ menu:
     # check the hooks section
     currency: Vault
     # where the item should be in the /ranks gui?
-    slot: 13
+    slot: 12
     item:
       type: "LIME_BANNER"
       name: "&#00FF00&lVIP &fRANK"
@@ -28,6 +28,27 @@ menu:
     buy-actions:
       - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
       - "[CONSOLE] lp user %player% parent set VIP"
+      - "[CLOSE] menu"
+  MVP:
+    rank: "MVP"
+    server: ""
+    price: 10000.0
+    currency: Vault
+    slot: 14
+    item:
+      type: "LIGHT_BLUE_BANNER"
+      name: "&#00FFFF&lMVP &fRANK"
+      lore:
+        - " "
+        - " &7- &fPrice: &#00AA00$%price%"
+        - " "
+        - "&#00FFFFᴘᴇʀᴍɪssɪᴏɴs"
+        - " &7- &f%permission%"
+        - " "
+        - "&#00FFFF&l(!) &#00FFFFClick here to purchase!"
+    buy-actions:
+      - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
+      - "[CONSOLE] lp user %player% parent set MVP"
       - "[CLOSE] menu"
   SOME-DECORATION:
     slot: [0, 9, 18, 8, 17, 26]
@@ -55,4 +76,4 @@ hooks:
 include-global-permissions: false
 
 # do not change
-version: 1
+version: 2
