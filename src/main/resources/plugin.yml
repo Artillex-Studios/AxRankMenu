@@ -7,6 +7,13 @@ folia-supported: true
 depend:
   - LuckPerms
 
+softdepend:
+  - PlaceholderAPI
+  - CoinsEngine
+  - PlayerPoints
+  - RoyaleEconomy
+  - UltraEconomy
+
 commands:
   axrankmenu:
     usage: /<command>

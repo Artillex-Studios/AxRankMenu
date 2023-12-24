@@ -5,6 +5,7 @@ import com.artillexstudios.axrankmenu.hooks.currency.CoinsEngineHook;
 import com.artillexstudios.axrankmenu.hooks.currency.CurrencyHook;
 import com.artillexstudios.axrankmenu.hooks.currency.PlayerPointsHook;
 import com.artillexstudios.axrankmenu.hooks.currency.RoyaleEconomyHook;
+import com.artillexstudios.axrankmenu.hooks.currency.UltraEconomyHook;
 import com.artillexstudios.axrankmenu.hooks.currency.VaultHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -40,12 +41,19 @@ public class HookManager {
         } else {
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] CoinsEngine is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
         }
-        
+
         if (CONFIG.getBoolean("hooks.RoyaleEconomy.register", true) && Bukkit.getPluginManager().getPlugin("RoyaleEconomy") != null) {
             currency.add(new RoyaleEconomyHook());
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into RoyaleEconomy!"));
         } else {
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] RoyaleEconomy is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
+        }
+
+        if (CONFIG.getBoolean("hooks.UltraEconomy.register", true) && Bukkit.getPluginManager().getPlugin("UltraEconomy") != null) {
+            currency.add(new UltraEconomyHook());
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into UltraEconomy!"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] UltraEconomy is set in config.yml, but it isn't installed, please download it or change it in the config to stop errors!"));
         }
         
         for (CurrencyHook hook : currency) hook.setup();

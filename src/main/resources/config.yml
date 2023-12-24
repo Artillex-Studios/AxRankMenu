@@ -66,6 +66,9 @@ hooks:
   CoinsEngine:
     register: true
     currency-name: "coins"
+  UltraEconomy:
+    register: true
+    currency-name: "coins"
   PlaceholderAPI:
     register: true
 

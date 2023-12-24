@@ -14,8 +14,8 @@ public class PlaceholderUtils {
     public static String parsePlaceholders(@NotNull String string, @NotNull Section section) {
         string = string.replace("%price%", StringUtils.formatNumber("#,###.##", section.getDouble("price")));
 
-        LuckPerms lpApi = LuckPermsProvider.get();
-        ImmutableContextSet set = lpApi.getContextManager().getStaticContext();
+        final LuckPerms lpApi = LuckPermsProvider.get();
+        final ImmutableContextSet set = lpApi.getContextManager().getStaticContext();
         string = string.replace("%server%", (section.getString("server").equals("") && set.getAnyValue("server").isPresent()) ? set.getAnyValue("server").get() : section.getString("server"));
 
         if (HookManager.getPapi() != null)
