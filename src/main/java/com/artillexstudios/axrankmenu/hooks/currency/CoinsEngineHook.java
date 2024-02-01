@@ -21,6 +21,11 @@ public class CoinsEngineHook implements CurrencyHook {
     }
 
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         if (currency == null) return 0;
         return CoinsEngineAPI.getBalance(p, currency);

@@ -7,6 +7,8 @@ public interface CurrencyHook {
 
     String getName();
 
+    boolean isPersistent();
+
     double getBalance(Player p);
 
     void giveBalance(Player p, double amount);

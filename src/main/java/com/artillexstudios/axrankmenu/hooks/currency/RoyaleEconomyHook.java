@@ -16,6 +16,11 @@ public class RoyaleEconomyHook implements CurrencyHook {
     }
 
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         return RoyaleEconomy.apiHandler.balance.getBalance(p.getUniqueId().toString());
     }

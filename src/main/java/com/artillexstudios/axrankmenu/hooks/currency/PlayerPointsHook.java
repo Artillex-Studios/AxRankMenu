@@ -18,6 +18,11 @@ public class PlayerPointsHook implements CurrencyHook {
     }
 
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         return econ.look(p.getUniqueId());
     }

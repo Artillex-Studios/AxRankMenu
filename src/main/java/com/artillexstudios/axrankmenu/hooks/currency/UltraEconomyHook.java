@@ -26,6 +26,11 @@ public class UltraEconomyHook implements CurrencyHook {
     }
 
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
     public double getBalance(@NotNull Player p) {
         final Optional<Account> account = UltraEconomy.getAPI().getAccounts().uuid(p.getUniqueId());
         if (!account.isPresent()) return 0.0D;
