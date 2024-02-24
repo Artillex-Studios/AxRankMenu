@@ -1,6 +1,7 @@
 package com.artillexstudios.axrankmenu.gui;
 
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
+import com.artillexstudios.axapi.scheduler.Scheduler;
 import com.artillexstudios.axapi.utils.ItemBuilder;
 import com.artillexstudios.axapi.utils.NumberUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
@@ -129,9 +130,19 @@ public class RankGui {
                         ac = ac.replace("%server%", CONFIG.getString("menu." + str + ".server"));
 
                         switch (type[0]) {
-                            case "[MESSAGE]": player.sendMessage(StringUtils.formatToString(ac)); break;
-                            case "[CONSOLE]": Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ac); break;
-                            case "[CLOSE]": player.closeInventory(); break;
+                            case "[MESSAGE]": {
+                                player.sendMessage(StringUtils.formatToString(ac));
+                                break;
+                            }
+                            case "[CONSOLE]": {
+                                String finalAc = ac;
+                                Scheduler.get().execute(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalAc));
+                                break;
+                            }
+                            case "[CLOSE]": {
+                                player.closeInventory();
+                                break;
+                            }
                         }
                     }
                 });
