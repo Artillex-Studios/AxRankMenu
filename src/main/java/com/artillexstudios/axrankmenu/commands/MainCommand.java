@@ -1,6 +1,6 @@
 package com.artillexstudios.axrankmenu.commands;
 
-import com.artillexstudios.axrankmenu.gui.RankGui;
+import com.artillexstudios.axrankmenu.gui.impl.RankGui;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.Map;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 import static com.artillexstudios.axrankmenu.AxRankMenu.LANG;
@@ -37,7 +36,7 @@ public class MainCommand implements CommandExecutor {
             return true;
         }
 
-        new RankGui().openFor((Player) sender);
+        new RankGui((Player) sender).open();
         return true;
     }
 }

@@ -1,0 +1,67 @@
+# ----- GUI SETTINGS -----
+title: "&0&lʀᴀɴᴋs"
+# a gui can only have 1-6 rows
+rows: 3
+# valid values: CHEST, WORKBENCH, HOPPER, DISPENSER, BREWING
+type: CHEST
+
+# ----- ITEMS -----
+
+VIP:
+  # the name of the rank
+  rank: "VIP"
+  # set to "" to use the current server
+  server: ""
+  # the price of the rank (check the hooks section)
+  price: 1000.0
+  # check the hooks section
+  currency: Vault
+  # where the item should be in the /ranks gui?
+  slot: 12
+  item:
+    type: "LIME_BANNER"
+    name: "&#00FF00&lVIP &fRANK"
+    lore:
+      - " "
+      - " &7- &fPrice: &#00AA00$%price%"
+      - " "
+      - "&#00FF00ᴘᴇʀᴍɪssɪᴏɴs"
+      - " &7- &f%permission%" # this line will be repeated and replaced for every permission of the rank
+      - " "
+      - "&#00FF00&l(!) &#00FF00Click here to purchase!"
+  buy-actions:
+    - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
+    - "[CONSOLE] lp user %player% parent set VIP"
+    - "[CLOSE] menu"
+
+MVP:
+  rank: "MVP"
+  server: ""
+  price: 10000.0
+  currency: Vault
+  slot: 14
+  item:
+    type: "LIGHT_BLUE_BANNER"
+    name: "&#00FFFF&lMVP &fRANK"
+    lore:
+      - " "
+      - " &7- &fPrice: &#00AA00$%price%"
+      - " "
+      - "&#00FFFFᴘᴇʀᴍɪssɪᴏɴs"
+      - " &7- &f%permission%"
+      - " "
+      - "&#00FFFF&l(!) &#00FFFFClick here to purchase!"
+  buy-actions:
+    - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
+    - "[CONSOLE] lp user %player% parent set MVP"
+    - "[CLOSE] menu"
+
+# you can add as many decorations as you would like
+SOME-DECORATION:
+  slot: [0, 9, 18, 8, 17, 26]
+  item:
+    type: "WHITE_STAINED_GLASS_PANE"
+    name: " "
+
+# do not change
+version: 1

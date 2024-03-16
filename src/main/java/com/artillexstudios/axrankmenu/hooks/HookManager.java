@@ -12,12 +12,12 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 
 public class HookManager {
-    private static final HashSet<CurrencyHook> currency = new HashSet<>();
+    private static final ArrayList<CurrencyHook> currency = new ArrayList<>();
     private static PlaceholderAPIHook papi = null;
 
     public void updateHooks() {
@@ -67,7 +67,7 @@ public class HookManager {
     }
 
     @NotNull
-    public static HashSet<CurrencyHook> getCurrency() {
+    public static ArrayList<CurrencyHook> getCurrency() {
         return currency;
     }
 
