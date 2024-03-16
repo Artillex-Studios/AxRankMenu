@@ -40,7 +40,6 @@ public class Rank {
         this.section = section;
         this.requester = requester;
         group = luckPerms.getGroupManager().getGroup(section.getString("rank"));
-        if (group == null) return;
     }
 
     public Node[] getNodes() {

@@ -32,7 +32,7 @@ public class RankGui extends GuiFrame {
 
             final Rank rank = new Rank(RANKS.getSection(route), player);
             if (rank.getGroup() == null) {
-                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF0000[AxRankMenu] The group %group% does not exist!".replace("%group%", CONFIG.getString(route + ".rank"))));
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF0000[AxRankMenu] The group %group% does not exist!".replace("%group%", RANKS.getString(route + ".rank", "---"))));
                 continue;
             }
 

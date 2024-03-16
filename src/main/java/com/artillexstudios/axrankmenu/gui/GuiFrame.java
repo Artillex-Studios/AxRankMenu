@@ -26,7 +26,10 @@ public class GuiFrame {
 
     public void setGui(BaseGui gui) {
         this.gui = gui;
-        for (String str : file.getBackingDocument().getRoutesAsStrings(false)) createItem(str);
+        for (String str : file.getBackingDocument().getRoutesAsStrings(false)) {
+            if (file.getString(str + ".rank", null) != null) continue;
+            createItem(str);
+        }
     }
 
     @NotNull
