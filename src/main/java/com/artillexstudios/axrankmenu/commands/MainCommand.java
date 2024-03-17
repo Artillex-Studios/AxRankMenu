@@ -13,6 +13,7 @@ import java.util.Collections;
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 import static com.artillexstudios.axrankmenu.AxRankMenu.LANG;
 import static com.artillexstudios.axrankmenu.AxRankMenu.MESSAGEUTILS;
+import static com.artillexstudios.axrankmenu.AxRankMenu.RANKS;
 
 public class MainCommand implements CommandExecutor {
 
@@ -27,6 +28,11 @@ public class MainCommand implements CommandExecutor {
 
             if (!LANG.reload()) {
                 MESSAGEUTILS.sendLang(sender, "reload.failed", Collections.singletonMap("%file%", "lang.yml"));
+                return true;
+            }
+
+            if (!RANKS.reload()) {
+                MESSAGEUTILS.sendLang(sender, "reload.failed", Collections.singletonMap("%file%", "ranks.yml"));
                 return true;
             }
 

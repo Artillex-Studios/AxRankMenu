@@ -9,6 +9,7 @@ import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.G
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.loader.LoaderSettings;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.updater.UpdaterSettings;
 import com.artillexstudios.axapi.scheduler.Scheduler;
+import com.artillexstudios.axapi.utils.FeatureFlags;
 import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axrankmenu.commands.MainCommand;
 import com.artillexstudios.axrankmenu.commands.TabComplete;
@@ -52,5 +53,10 @@ public final class AxRankMenu extends AxPlugin {
     }
 
     public void disable() {
+    }
+
+    public void updateFlags() {
+        FeatureFlags.PACKET_ENTITY_TRACKER_ENABLED.set(true);
+        FeatureFlags.HOLOGRAM_UPDATE_TICKS.set(20L);
     }
 }
