@@ -8,6 +8,7 @@ import com.artillexstudios.axapi.utils.NumberUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
 import com.artillexstudios.axrankmenu.hooks.currency.CurrencyHook;
+import com.artillexstudios.axrankmenu.utils.ItemBuilderUtil;
 import com.artillexstudios.axrankmenu.utils.PlaceholderUtils;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.luckperms.api.LuckPerms;
@@ -84,7 +85,7 @@ public class Rank {
             }
         }
 
-        final ItemStack it = new ItemBuilder(section.getSection("item")).setLore(lore).get();
+        final ItemStack it = ItemBuilderUtil.newBuilder(section.getSection("item")).setLore(lore).get();
 
         return new GuiItem(it, event -> {
             final String cGroupName = luckPerms.getUserManager().getUser(requester.getUniqueId()).getPrimaryGroup();

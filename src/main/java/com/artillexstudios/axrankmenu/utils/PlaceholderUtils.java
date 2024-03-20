@@ -1,6 +1,7 @@
 package com.artillexstudios.axrankmenu.utils;
 
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
+import com.artillexstudios.axapi.utils.ClassUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
 import net.luckperms.api.LuckPerms;
@@ -22,6 +23,10 @@ public class PlaceholderUtils {
 
         final User user = lpApi.getUserManager().getUser(player.getUniqueId());
         final Group playerRank = lpApi.getGroupManager().getGroup(user.getPrimaryGroup());
+
+        if (ClassUtils.classExists("me.clip.placeholderapi.PlaceholderAPI")) {
+            string = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, string);
+        }
 
         double price = section.getDouble("price");
         if (CONFIG.getBoolean("discount-ranks", false)) {
