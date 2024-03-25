@@ -12,7 +12,7 @@ public class CoinsEngineHook implements CurrencyHook {
 
     @Override
     public void setup() {
-        currency = CoinsEngineAPI.getCurrency(CONFIG.getString("hook-settings.CoinsEngine.currency-name", "coins"));
+        currency = CoinsEngineAPI.getCurrency(CONFIG.getString("hooks.CoinsEngine.currency-name", "coins"));
     }
 
     @Override

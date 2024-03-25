@@ -15,7 +15,7 @@ public class UltraEconomyHook implements CurrencyHook {
 
     @Override
     public void setup() {
-        final Optional<Currency> currencyOptional = UltraEconomy.getAPI().getCurrencies().name(CONFIG.getString("hook-settings.UltraEconomy.currency-name", "coins"));
+        final Optional<Currency> currencyOptional = UltraEconomy.getAPI().getCurrencies().name(CONFIG.getString("hooks.UltraEconomy.currency-name", "coins"));
         if (!currencyOptional.isPresent()) throw new RuntimeException("Currency not found!");
         currency = currencyOptional.get();
     }
