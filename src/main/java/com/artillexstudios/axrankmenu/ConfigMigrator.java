@@ -14,7 +14,6 @@ public class ConfigMigrator {
         for (String route : CONFIG.getSection("menu").getRoutesAsStrings(true)) {
 
             if (!CONFIG.getStringList("menu." + route).isEmpty()) {
-                System.out.println(CONFIG.getStringList("menu." + route));
                 RANKS.set(route, CONFIG.getStringList("menu." + route));
                 continue;
             }

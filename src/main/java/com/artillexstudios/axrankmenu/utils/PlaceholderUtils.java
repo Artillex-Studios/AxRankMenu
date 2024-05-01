@@ -24,7 +24,7 @@ public class PlaceholderUtils {
         final User user = lpApi.getUserManager().getUser(player.getUniqueId());
         final Group playerRank = lpApi.getGroupManager().getGroup(user.getPrimaryGroup());
 
-        if (ClassUtils.classExists("me.clip.placeholderapi.PlaceholderAPI")) {
+        if (ClassUtils.INSTANCE.classExists("me.clip.placeholderapi.PlaceholderAPI")) {
             string = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, string);
         }
 

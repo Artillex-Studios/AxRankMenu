@@ -3,7 +3,6 @@ package com.artillexstudios.axrankmenu.rank;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
 import com.artillexstudios.axapi.scheduler.Scheduler;
-import com.artillexstudios.axapi.utils.ItemBuilder;
 import com.artillexstudios.axapi.utils.NumberUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
@@ -85,7 +84,7 @@ public class Rank {
             }
         }
 
-        final ItemStack it = ItemBuilderUtil.newBuilder(section.getSection("item")).setLore(lore).get();
+        final ItemStack it = ItemBuilderUtil.newBuilder(section.getSection("item"), requester).setLore(lore).get();
 
         return new GuiItem(it, event -> {
             final String cGroupName = luckPerms.getUserManager().getUser(requester.getUniqueId()).getPrimaryGroup();
