@@ -13,18 +13,12 @@ softdepend:
   - PlayerPoints
   - RoyaleEconomy
   - UltraEconomy
-
-commands:
-  axrankmenu:
-    usage: /<command>
-    aliases:
-      - axranks
-      - ranks
-      - axrank
-      - rankmenu
-      - ranksmenu
-      - rank
+  - BeastTokens
 
 permissions:
+  axrankmenu.use:
+    default: true
   axrankmenu.reload:
+    default: op
+  axrankmenu.addrank:
     default: op

@@ -13,6 +13,8 @@ hooks:
   UltraEconomy:
     register: true
     currency-name: "coins"
+  BeastTokens:
+    register: true
   PlaceholderAPI:
     register: true
 
@@ -36,5 +38,13 @@ force-buy-order:
   enabled: false
   track: "trackName"
 
+# you must define at least 1
+# reloading will add new commands, however a restart is recommended when editing this
+command-aliases:
+  - "axrankmenu"
+  - "rankmenu"
+  - "rank"
+  - "ranks"
+
 # do not change
-version: 3
+version: 5

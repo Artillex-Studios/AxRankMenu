@@ -14,9 +14,11 @@ reload:
 buy:
   no-currency: "&#FF3333You don't have enough money to buy this rank!"
 
+add-rank: "&#33FF33You have added the &f%rank% &#33FF33rank to the gui! &7Now go to the plugins/AxRankMenu/ranks.yml file to edit it!"
+
 error:
   buy-order: "&#FF3333You must buy ranks in order!"
   downgrade-disabled: "&#FF3333You can't downgrade your rank!"
 
 # do not change
-version: 3
+version: 4
