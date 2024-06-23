@@ -1,19 +1,28 @@
 package com.artillexstudios.axrankmenu.commands;
 
 import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
+import com.artillexstudios.axapi.nms.NMSHandlers;
+import com.artillexstudios.axapi.reflection.FastFieldAccessor;
 import com.artillexstudios.axrankmenu.AxRankMenu;
 import com.artillexstudios.axrankmenu.commands.annotations.Groups;
 import com.artillexstudios.axrankmenu.gui.impl.RankGui;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
+import com.artillexstudios.axrankmenu.utils.CommandMessages;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Warning;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.DefaultFor;
 import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+import revxrsal.commands.bukkit.exception.InvalidPlayerException;
 import revxrsal.commands.orphan.OrphanCommand;
 import revxrsal.commands.orphan.Orphans;
 
@@ -21,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -103,27 +113,50 @@ public class Commands implements OrphanCommand {
         return -1;
     }
 
-    public static void registerCommand() { // todo: fix unregister
-        final BukkitCommandHandler handler = BukkitCommandHandler.create(AxRankMenu.getInstance());
+    private static BukkitCommandHandler handler = null;
+
+    public static void registerCommand() {
+        if (handler == null) {
+            Warning.WarningState prevState = Bukkit.getWarningState();
+            FastFieldAccessor accessor = FastFieldAccessor.forClassField(Bukkit.getServer().getClass().getPackage().getName() + ".CraftServer", "warningState");
+            accessor.set(Bukkit.getServer(), Warning.WarningState.OFF);
+            handler = BukkitCommandHandler.create(AxRankMenu.getInstance());
+            accessor.set(Bukkit.getServer(), prevState);
+
+            handler.registerValueResolver(0, OfflinePlayer.class, context -> {
+                String value = context.pop();
+                if (value.equalsIgnoreCase("self") || value.equalsIgnoreCase("me")) return ((BukkitCommandActor) context.actor()).requirePlayer();
+                OfflinePlayer player = NMSHandlers.getNmsHandler().getCachedOfflinePlayer(value);
+                if (player == null && !(player = Bukkit.getOfflinePlayer(value)).hasPlayedBefore()) throw new InvalidPlayerException(context.parameter(), value);
+                return player;
+            });
+
+            handler.getAutoCompleter().registerSuggestionFactory(parameter -> {
+                if (parameter.hasAnnotation(Groups.class)) {
+                    return (args, sender, command) -> {
+                        final LuckPerms luckPerms = LuckPermsProvider.get();
+                        final Set<Group> groups = new HashSet<>(luckPerms.getGroupManager().getLoadedGroups());
+                        groups.removeIf(group -> {
+                            for (String str : RANKS.getBackingDocument().getRoutesAsStrings(false)) {
+                                if (RANKS.getString(str + ".rank", "").equalsIgnoreCase(group.getName())) return true;
+                            }
+                            return false;
+                        });
+
+                        return groups.stream().map(Group::getName).collect(Collectors.toList());
+                    };
+                }
+                return null;
+            });
+
+            handler.getAutoCompleter().registerParameterSuggestions(OfflinePlayer.class, (args, sender, command) -> {
+                return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toSet());
+            });
+
+            handler.getTranslator().add(new CommandMessages());
+            handler.setLocale(new Locale("en", "US"));
+        }
         handler.unregisterAllCommands();
-
-        handler.getAutoCompleter().registerSuggestionFactory(parameter -> {
-            if (parameter.hasAnnotation(Groups.class)) {
-                return (args, sender, command) -> {
-                    final LuckPerms luckPerms = LuckPermsProvider.get();
-                    final Set<Group> groups = new HashSet<>(luckPerms.getGroupManager().getLoadedGroups());
-                    groups.removeIf(group -> {
-                        for (String str : RANKS.getBackingDocument().getRoutesAsStrings(false)) {
-                            if (RANKS.getString(str + ".rank", "").equalsIgnoreCase(group.getName())) return true;
-                        }
-                        return false;
-                    });
-
-                    return groups.stream().map(Group::getName).collect(Collectors.toList());
-                };
-            }
-            return null;
-        });
 
         handler.register(Orphans.path(CONFIG.getStringList("command-aliases").toArray(String[]::new)).handler(new Commands()));
         handler.registerBrigadier();

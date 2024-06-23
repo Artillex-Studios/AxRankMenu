@@ -13,6 +13,7 @@ import com.artillexstudios.axapi.utils.FeatureFlags;
 import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axrankmenu.commands.Commands;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
+import com.artillexstudios.axrankmenu.utils.UpdateNotifier;
 import org.bstats.bukkit.Metrics;
 
 import java.io.File;
@@ -46,6 +47,8 @@ public final class AxRankMenu extends AxPlugin {
         Commands.registerCommand();
 
         Scheduler.get().run(task -> new HookManager().updateHooks());
+
+        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier(this, 5071);
     }
 
     public void disable() {
