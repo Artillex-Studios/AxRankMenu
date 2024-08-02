@@ -130,7 +130,11 @@ public class Rank {
 
             hook.takeBalance(requester, price);
 
-            for (String action : section.getStringList("buy-actions")) {
+            var actions = section.getStringList("buy-actions");
+            if (actions.isEmpty()) {
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF0000[AxRankMenu] The buy-actions section is missing from the " + section.getString("rank") + " rank, this will cause issues!"));
+            }
+            for (String action : actions) { // todo: add a warning if missing
                 final String[] type = action.split(" ");
                 String ac = action.replace(type[0] + " ", "");
                 ac = ac.replace("%player%", requester.getName());

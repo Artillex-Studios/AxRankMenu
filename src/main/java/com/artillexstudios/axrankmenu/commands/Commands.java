@@ -92,7 +92,7 @@ public class Commands implements OrphanCommand {
                 " ",
                 "&#00FF00&l(!) &#00FF00Click here to purchase!"
         ));
-        section.set("item.buy-actions", Arrays.asList(
+        section.set("buy-actions", Arrays.asList(
                 "[MESSAGE] &#00FF00You have purchased the &f%name%&#00FF00! &7(%rank%)",
                 "[CONSOLE] lp user %player% parent set " + group,
                 "[CLOSE] menu"
