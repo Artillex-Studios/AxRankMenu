@@ -9,9 +9,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import static com.artillexstudios.axrankmenu.AxRankMenu.RANKS;
 
 public class RankGui extends GuiFrame {
+    private static final Set<RankGui> openMenus = Collections.newSetFromMap(new WeakHashMap<>());
+
     private final Player player;
     private final Gui gui = Gui.gui(GuiType.valueOf(RANKS.getString("type", "CHEST")))
             .disableAllInteractions()
@@ -26,6 +32,7 @@ public class RankGui extends GuiFrame {
     }
 
     public void open() {
+        for (String str : file.getBackingDocument().getRoutesAsStrings(false)) createItem(str);
         for (String route : RANKS.getBackingDocument().getRoutesAsStrings(false)) {
             if (RANKS.getString(route + ".rank", null) == null) continue;
 
@@ -38,6 +45,16 @@ public class RankGui extends GuiFrame {
             super.addItem(rank.getItem(), route);
         }
 
+        if (openMenus.contains(this)) {
+            gui.update();
+            return;
+        }
+        openMenus.add(this);
+
         gui.open(player);
+    }
+
+    public static Set<RankGui> getOpenMenus() {
+        return openMenus;
     }
 }
