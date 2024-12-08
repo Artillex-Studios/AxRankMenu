@@ -67,7 +67,6 @@ public class Commands implements OrphanCommand {
         }
 
         new HookManager().updateHooks();
-        Commands.registerCommand();
 
         MESSAGEUTILS.sendLang(sender, "reload.success");
     }
