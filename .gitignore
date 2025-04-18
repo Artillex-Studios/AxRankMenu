@@ -1,5 +1,6 @@
 # User-specific stuff
 .idea/
+.run
 
 *.iml
 *.ipr
@@ -111,5 +112,3 @@ buildNumber.properties
 
 # Common working directory
 run/
-
-.gitattributes

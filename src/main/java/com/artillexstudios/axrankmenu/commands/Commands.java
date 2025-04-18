@@ -1,8 +1,6 @@
 package com.artillexstudios.axrankmenu.commands;
 
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.block.implementation.Section;
-import com.artillexstudios.axapi.nms.NMSHandlers;
-import com.artillexstudios.axapi.reflection.FastFieldAccessor;
+import com.artillexstudios.axapi.libs.boostedyaml.block.implementation.Section;
 import com.artillexstudios.axrankmenu.AxRankMenu;
 import com.artillexstudios.axrankmenu.commands.annotations.Groups;
 import com.artillexstudios.axrankmenu.gui.impl.RankGui;
@@ -11,18 +9,12 @@ import com.artillexstudios.axrankmenu.utils.CommandMessages;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Warning;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.DefaultFor;
 import revxrsal.commands.annotation.Subcommand;
-import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
-import revxrsal.commands.bukkit.exception.InvalidPlayerException;
 import revxrsal.commands.orphan.OrphanCommand;
 import revxrsal.commands.orphan.Orphans;
 
@@ -116,19 +108,7 @@ public class Commands implements OrphanCommand {
 
     public static void registerCommand() {
         if (handler == null) {
-            Warning.WarningState prevState = Bukkit.getWarningState();
-            FastFieldAccessor accessor = FastFieldAccessor.forClassField(Bukkit.getServer().getClass().getPackage().getName() + ".CraftServer", "warningState");
-            accessor.set(Bukkit.getServer(), Warning.WarningState.OFF);
             handler = BukkitCommandHandler.create(AxRankMenu.getInstance());
-            accessor.set(Bukkit.getServer(), prevState);
-
-            handler.registerValueResolver(0, OfflinePlayer.class, context -> {
-                String value = context.pop();
-                if (value.equalsIgnoreCase("self") || value.equalsIgnoreCase("me")) return ((BukkitCommandActor) context.actor()).requirePlayer();
-                OfflinePlayer player = NMSHandlers.getNmsHandler().getCachedOfflinePlayer(value);
-                if (player == null && !(player = Bukkit.getOfflinePlayer(value)).hasPlayedBefore()) throw new InvalidPlayerException(context.parameter(), value);
-                return player;
-            });
 
             handler.getAutoCompleter().registerSuggestionFactory(parameter -> {
                 if (parameter.hasAnnotation(Groups.class)) {
@@ -146,10 +126,6 @@ public class Commands implements OrphanCommand {
                     };
                 }
                 return null;
-            });
-
-            handler.getAutoCompleter().registerParameterSuggestions(OfflinePlayer.class, (args, sender, command) -> {
-                return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toSet());
             });
 
             handler.getTranslator().add(new CommandMessages());

@@ -2,12 +2,13 @@ package com.artillexstudios.axrankmenu;
 
 import com.artillexstudios.axapi.AxPlugin;
 import com.artillexstudios.axapi.config.Config;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.dvs.versioning.BasicVersioning;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.libs.org.snakeyaml.engine.v2.common.ScalarStyle;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.dumper.DumperSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.general.GeneralSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.loader.LoaderSettings;
-import com.artillexstudios.axapi.libs.boostedyaml.boostedyaml.settings.updater.UpdaterSettings;
+import com.artillexstudios.axapi.libs.boostedyaml.dvs.versioning.BasicVersioning;
+import com.artillexstudios.axapi.libs.boostedyaml.libs.org.snakeyaml.engine.v2.common.ScalarStyle;
+import com.artillexstudios.axapi.libs.boostedyaml.settings.dumper.DumperSettings;
+import com.artillexstudios.axapi.libs.boostedyaml.settings.general.GeneralSettings;
+import com.artillexstudios.axapi.libs.boostedyaml.settings.loader.LoaderSettings;
+import com.artillexstudios.axapi.libs.boostedyaml.settings.updater.UpdaterSettings;
+import com.artillexstudios.axapi.metrics.AxMetrics;
 import com.artillexstudios.axapi.scheduler.Scheduler;
 import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axapi.utils.featureflags.FeatureFlags;
@@ -25,6 +26,7 @@ public final class AxRankMenu extends AxPlugin {
     public static Config RANKS;
     public static MessageUtils MESSAGEUTILS;
     private static AxPlugin instance;
+    private static AxMetrics metrics;
 
     public static AxPlugin getInstance() {
         return instance;
@@ -51,10 +53,14 @@ public final class AxRankMenu extends AxPlugin {
 
         GuiUpdater.start();
 
+        metrics = new AxMetrics(this, 16);
+        metrics.start();
+
         if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier(this, 5071);
     }
 
     public void disable() {
+        if (metrics != null) metrics.cancel();
         GuiUpdater.stop();
     }
 
