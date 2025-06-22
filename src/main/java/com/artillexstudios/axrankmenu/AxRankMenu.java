@@ -64,8 +64,8 @@ public final class AxRankMenu extends AxPlugin {
         GuiUpdater.stop();
     }
 
-    public void updateFlags(FeatureFlags flags) {
-        flags.USE_LEGACY_HEX_FORMATTER.set(true);
-        flags.PACKET_ENTITY_TRACKER_ENABLED.set(false);
+    public void updateFlags() {
+        FeatureFlags.USE_LEGACY_HEX_FORMATTER.set(true);
+        FeatureFlags.PACKET_ENTITY_TRACKER_ENABLED.set(false);
     }
 }
