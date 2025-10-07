@@ -1,4 +1,6 @@
-prefix: "&#FFDD00&lAxRankMenu &7» "
+# DOCUMENTATION: https://docs.artillex-studios.com/axrankmenu.html
+
+prefix: "<gradient:#FFDD00:#FFFF00><b>AxRankMenu</b></gradient> &7» "
 
 hooks:
   Vault:
