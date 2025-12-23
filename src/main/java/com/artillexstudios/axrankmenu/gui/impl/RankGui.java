@@ -3,6 +3,7 @@ package com.artillexstudios.axrankmenu.gui.impl;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.gui.GuiFrame;
 import com.artillexstudios.axrankmenu.rank.Rank;
+import dev.triumphteam.gui.builder.gui.BaseGuiBuilder;
 import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Bukkit;
@@ -19,15 +20,25 @@ public class RankGui extends GuiFrame {
     private static final Set<RankGui> openMenus = Collections.newSetFromMap(new WeakHashMap<>());
 
     private final Player player;
-    private final Gui gui = Gui.gui(GuiType.valueOf(RANKS.getString("type", "CHEST")))
-            .disableAllInteractions()
-            .title(StringUtils.format(RANKS.getString("title")))
-            .rows(RANKS.getInt("rows", 1))
-            .create();
+    private final Gui gui;
 
     public RankGui(@NotNull Player player) {
         super(RANKS, player);
         this.player = player;
+
+        GuiType guiType = GuiType.valueOf(RANKS.getString("type", "CHEST"));
+
+        BaseGuiBuilder<?, ?> builder;
+        if (guiType == GuiType.CHEST) {
+            builder = Gui.gui().rows(RANKS.getInt("rows", 1));
+        } else {
+            builder = Gui.gui(guiType);
+        }
+
+        gui = (Gui) builder.disableAllInteractions()
+                .title(StringUtils.format(RANKS.getString("title")))
+                .create();
+
         setGui(gui);
     }
 

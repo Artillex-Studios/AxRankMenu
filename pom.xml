@@ -3,7 +3,7 @@
 
     <groupId>com.artillexstudios</groupId>
     <artifactId>AxRankMenu</artifactId>
-    <version>1.12.0</version>
+    <version>1.13.0</version>
     <packaging>jar</packaging>
 
     <name>AxRankMenu</name>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>com.artillexstudios.axapi</groupId>
             <artifactId>axapi</artifactId>
-            <version>1.4.802</version>
+            <version>1.4.830</version>
             <scope>compile</scope>
             <classifier>all</classifier>
         </dependency>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
-            <version>3.1.11</version>
+            <version>3.1.13</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
