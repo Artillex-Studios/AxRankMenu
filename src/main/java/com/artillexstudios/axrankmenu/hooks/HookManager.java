@@ -1,9 +1,11 @@
 package com.artillexstudios.axrankmenu.hooks;
 
+import com.artillexstudios.axapi.reflection.ClassUtils;
 import com.artillexstudios.axapi.utils.StringUtils;
 import com.artillexstudios.axrankmenu.hooks.currency.BeastTokensHook;
 import com.artillexstudios.axrankmenu.hooks.currency.CoinsEngineHook;
 import com.artillexstudios.axrankmenu.hooks.currency.CurrencyHook;
+import com.artillexstudios.axrankmenu.hooks.currency.ExcellentEconomyHook;
 import com.artillexstudios.axrankmenu.hooks.currency.PlayerPointsHook;
 import com.artillexstudios.axrankmenu.hooks.currency.RoyaleEconomyHook;
 import com.artillexstudios.axrankmenu.hooks.currency.UltraEconomyHook;
@@ -33,10 +35,17 @@ public class HookManager {
             currency.add(new PlayerPointsHook());
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into PlayerPoints!"));
         }
-        
-        if (CONFIG.getBoolean("hooks.CoinsEngine.register", true) && Bukkit.getPluginManager().getPlugin("CoinsEngine") != null) {
-            currency.add(new CoinsEngineHook());
-            Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into CoinsEngine!"));
+
+        if (ClassUtils.INSTANCE.classExists("su.nightexpress.excellenteconomy.api.ExcellentEconomyAPI")) {
+            if (CONFIG.getBoolean("hooks.ExcellentEconomy.register", true)) {
+                currency.add(new ExcellentEconomyHook());
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into ExcellentEconomy!"));
+            }
+        } else {
+            if (CONFIG.getBoolean("hooks.CoinsEngine.register", true) && Bukkit.getPluginManager().getPlugin("CoinsEngine") != null) {
+                currency.add(new CoinsEngineHook());
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into CoinsEngine!"));
+            }
         }
 
         if (CONFIG.getBoolean("hooks.RoyaleEconomy.register", true) && Bukkit.getPluginManager().getPlugin("RoyaleEconomy") != null) {

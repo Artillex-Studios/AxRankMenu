@@ -12,6 +12,9 @@ hooks:
   CoinsEngine:
     register: true
     currency-name: "coins"
+  ExcellentEconomy:
+    register: true
+    currency-name: "coins"
   UltraEconomy:
     register: true
     currency-name: "coins"
@@ -56,4 +59,4 @@ update-notifier:
   on-join: true
 
 # do not change
-version: 6
+version: 7
