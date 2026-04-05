@@ -55,7 +55,8 @@ public final class AxRankMenu extends AxPlugin {
         metrics = new AxMetrics(this, 16);
         metrics.start();
 
-        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier(this, 5071);
+        UpdateNotifier.init(CONFIG, LANG);
+        if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier();
     }
 
     public void disable() {
