@@ -38,6 +38,9 @@ public class RankGui extends GuiFrame {
         gui = (Gui) builder.disableAllInteractions()
                 .title(StringUtils.format(RANKS.getString("title")))
                 .create();
+        gui.setCloseGuiAction(event -> {
+            openMenus.remove(this);
+        });
 
         setGui(gui);
     }

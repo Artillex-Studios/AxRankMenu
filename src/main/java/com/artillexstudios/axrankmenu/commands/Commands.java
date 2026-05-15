@@ -9,6 +9,7 @@ import com.artillexstudios.axrankmenu.utils.CommandMessages;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.DefaultFor;
@@ -42,7 +43,7 @@ public class Commands implements OrphanCommand {
 
     @Subcommand({"reload"})
     @CommandPermission(value = "axrankmenu.reload")
-    public void reload(@NotNull Player sender) {
+    public void reload(@NotNull CommandSender sender) {
         if (!CONFIG.reload()) {
             MESSAGEUTILS.sendLang(sender, "reload.failed", Collections.singletonMap("%file%", "tiers.yml"));
             return;
@@ -65,7 +66,7 @@ public class Commands implements OrphanCommand {
 
     @Subcommand({"addrank"})
     @CommandPermission(value = "axrankmenu.addrank")
-    public void addRank(@NotNull Player sender, @Groups String group) {
+    public void addRank(@NotNull CommandSender sender, @Groups String group) {
         final Section section = RANKS.getBackingDocument().createSection(group);
         section.set("rank", group);
         section.set("server", "");
