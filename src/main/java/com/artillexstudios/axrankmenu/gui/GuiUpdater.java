@@ -1,5 +1,6 @@
 package com.artillexstudios.axrankmenu.gui;
 
+import com.artillexstudios.axapi.executor.ExceptionReportingScheduledThreadPool;
 import com.artillexstudios.axrankmenu.gui.impl.RankGui;
 
 import java.util.concurrent.Executors;
@@ -12,7 +13,7 @@ public class GuiUpdater {
     public static void start() {
         if (service != null) service.shutdown();
 
-        service = Executors.newSingleThreadScheduledExecutor();
+        service = new ExceptionReportingScheduledThreadPool(1);
         service.scheduleAtFixedRate(() -> {
             try {
                 for (RankGui gui : RankGui.getOpenMenus()) {
