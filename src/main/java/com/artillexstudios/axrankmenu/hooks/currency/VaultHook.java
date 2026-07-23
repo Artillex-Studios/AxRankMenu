@@ -33,12 +33,12 @@ public class VaultHook implements CurrencyHook {
     }
 
     @Override
-    public void giveBalance(@NotNull Player p, double amount) {
-        econ.depositPlayer(p, amount);
+    public boolean giveBalance(@NotNull Player p, double amount) {
+        return econ != null && amount >= 0 && econ.depositPlayer(p, amount).transactionSuccess();
     }
 
     @Override
-    public void takeBalance(@NotNull Player p, double amount) {
-        econ.withdrawPlayer(p, amount);
+    public boolean takeBalance(@NotNull Player p, double amount) {
+        return econ != null && amount >= 0 && econ.withdrawPlayer(p, amount).transactionSuccess();
     }
 }

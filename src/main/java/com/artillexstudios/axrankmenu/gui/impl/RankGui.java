@@ -1,6 +1,7 @@
 package com.artillexstudios.axrankmenu.gui.impl;
 
 import com.artillexstudios.axapi.utils.StringUtils;
+import com.artillexstudios.axapi.scheduler.Scheduler;
 import com.artillexstudios.axrankmenu.gui.GuiFrame;
 import com.artillexstudios.axrankmenu.rank.Rank;
 import dev.triumphteam.gui.builder.gui.BaseGuiBuilder;
@@ -10,14 +11,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.RANKS;
 
 public class RankGui extends GuiFrame {
-    private static final Set<RankGui> openMenus = Collections.newSetFromMap(new WeakHashMap<>());
+    private static final Set<RankGui> openMenus = ConcurrentHashMap.newKeySet();
 
     private final Player player;
     private final Gui gui;
@@ -70,5 +70,20 @@ public class RankGui extends GuiFrame {
 
     public static Set<RankGui> getOpenMenus() {
         return openMenus;
+    }
+
+    public void refresh() {
+        if (!player.isOnline()) {
+            openMenus.remove(this);
+            return;
+        }
+        Scheduler.get().execute(player, this::open, () -> openMenus.remove(this), 1L);
+    }
+
+    public static void closeAll() {
+        for (RankGui menu : openMenus) {
+            if (menu.player.isOnline()) menu.player.closeInventory();
+        }
+        openMenus.clear();
     }
 }

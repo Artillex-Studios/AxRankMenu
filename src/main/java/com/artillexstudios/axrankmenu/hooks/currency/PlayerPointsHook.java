@@ -28,12 +28,12 @@ public class PlayerPointsHook implements CurrencyHook {
     }
 
     @Override
-    public void giveBalance(@NotNull Player p, double amount) {
-        econ.give(p.getUniqueId(), (int) amount);
+    public boolean giveBalance(@NotNull Player p, double amount) {
+        return amount >= 0 && econ.give(p.getUniqueId(), (int) Math.round(amount));
     }
 
     @Override
-    public void takeBalance(@NotNull Player p, double amount) {
-        econ.take(p.getUniqueId(), (int) Math.round(amount));
+    public boolean takeBalance(@NotNull Player p, double amount) {
+        return amount >= 0 && econ.take(p.getUniqueId(), (int) Math.round(amount));
     }
 }

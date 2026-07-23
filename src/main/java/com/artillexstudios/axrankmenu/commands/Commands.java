@@ -60,6 +60,7 @@ public class Commands implements OrphanCommand {
         }
 
         new HookManager().updateHooks();
+        AxRankMenu.getRequirementService().reload();
 
         MESSAGEUTILS.sendLang(sender, "reload.success");
     }
@@ -86,7 +87,6 @@ public class Commands implements OrphanCommand {
         ));
         section.set("buy-actions", Arrays.asList(
                 "[MESSAGE] &#00FF00You have purchased the &f%name%&#00FF00! &7(%rank%)",
-                "[CONSOLE] lp user %player% parent set " + group,
                 "[CLOSE] menu"
         ));
         RANKS.save();

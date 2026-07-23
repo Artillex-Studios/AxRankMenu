@@ -15,6 +15,7 @@ softdepend:
   - RoyaleEconomy
   - UltraEconomy
   - BeastTokens
+  - SuperiorSkyblock2
 
 permissions:
   axrankmenu.use:
@@ -22,4 +23,6 @@ permissions:
   axrankmenu.reload:
     default: op
   axrankmenu.addrank:
+    default: op
+  axrankmenu.requirements.debug:
     default: op

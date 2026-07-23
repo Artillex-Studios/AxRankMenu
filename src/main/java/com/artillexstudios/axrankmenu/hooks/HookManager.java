@@ -16,12 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static com.artillexstudios.axrankmenu.AxRankMenu.CONFIG;
 
 public class HookManager {
     private static final ArrayList<CurrencyHook> currency = new ArrayList<>();
     private static PlaceholderAPIHook papi = null;
+    private static AxRankMenuExpansion expansion = null;
 
     public void updateHooks() {
         currency.removeIf(currencyHook -> !currencyHook.isPersistent());
@@ -63,7 +65,15 @@ public class HookManager {
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into BeastTokens!"));
         }
         
-        for (CurrencyHook hook : currency) hook.setup();
+        currency.removeIf(hook -> {
+            try {
+                hook.setup();
+                return false;
+            } catch (RuntimeException exception) {
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Failed to initialize " + hook.getName() + ": " + exception.getMessage()));
+                return true;
+            }
+        });
 
         if (currency.isEmpty()) {
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Currency hook not found! Please check your config.yml!"));
@@ -71,7 +81,13 @@ public class HookManager {
 
         if (CONFIG.getBoolean("hooks.PlaceholderAPI.register", true) && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             papi = new PlaceholderAPIHook();
+            if (expansion == null) {
+                expansion = new AxRankMenuExpansion(com.artillexstudios.axrankmenu.AxRankMenu.getRequirementService());
+                expansion.register();
+            }
             Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#33FF33[AxRankMenu] Hooked into PlaceholderAPI!"));
+        } else {
+            papi = null;
         }
     }
     
@@ -89,11 +105,34 @@ public class HookManager {
     @Nullable
     public static CurrencyHook getCurrencyHook(@NotNull String name) {
         for (CurrencyHook hook : currency) {
-            if (!hook.getName().equals(name)) continue;
+            if (!hook.getName().equalsIgnoreCase(name)) continue;
             return hook;
         }
 
+        CurrencyHook dynamic = createDynamicCurrency(name);
+        if (dynamic != null) {
+            try {
+                dynamic.setup();
+                currency.add(dynamic);
+                return dynamic;
+            } catch (RuntimeException exception) {
+                Bukkit.getConsoleSender().sendMessage(StringUtils.formatToString("&#FF3333[AxRankMenu] Failed to initialize currency " + name + ": " + exception.getMessage()));
+            }
+        }
         return null;
+    }
+
+    @Nullable
+    private static CurrencyHook createDynamicCurrency(String name) {
+        int separator = name.indexOf('-');
+        if (separator <= 0 || separator == name.length() - 1) return null;
+        String provider = name.substring(0, separator).toLowerCase(Locale.ROOT);
+        String currencyId = name.substring(separator + 1);
+        return switch (provider) {
+            case "excellenteconomy" -> Bukkit.getPluginManager().isPluginEnabled("ExcellentEconomy") ? new ExcellentEconomyHook(currencyId) : null;
+            case "coinsengine" -> Bukkit.getPluginManager().isPluginEnabled("CoinsEngine") ? new CoinsEngineHook(currencyId) : null;
+            default -> null;
+        };
     }
 
     @Nullable
