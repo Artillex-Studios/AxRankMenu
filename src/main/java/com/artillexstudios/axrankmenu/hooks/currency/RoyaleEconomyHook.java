@@ -26,12 +26,16 @@ public class RoyaleEconomyHook implements CurrencyHook {
     }
 
     @Override
-    public void giveBalance(@NotNull Player p, double amount) {
+    public boolean giveBalance(@NotNull Player p, double amount) {
+        if (amount < 0) return false;
         RoyaleEconomy.apiHandler.balance.addBalance(p.getUniqueId().toString(), amount);
+        return true;
     }
 
     @Override
-    public void takeBalance(@NotNull Player p, double amount) {
+    public boolean takeBalance(@NotNull Player p, double amount) {
+        if (amount < 0 || getBalance(p) + 1.0E-7 < amount) return false;
         RoyaleEconomy.apiHandler.balance.removeBalance(p.getUniqueId().toString(), amount);
+        return true;
     }
 }

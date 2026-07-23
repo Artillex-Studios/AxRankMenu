@@ -14,7 +14,10 @@ import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axapi.utils.featureflags.FeatureFlags;
 import com.artillexstudios.axrankmenu.commands.Commands;
 import com.artillexstudios.axrankmenu.gui.GuiUpdater;
+import com.artillexstudios.axrankmenu.gui.impl.RankGui;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
+import com.artillexstudios.axrankmenu.api.requirement.RankRequirementRegistry;
+import com.artillexstudios.axrankmenu.requirement.RequirementService;
 import com.artillexstudios.axrankmenu.utils.UpdateNotifier;
 import org.bstats.bukkit.Metrics;
 
@@ -27,9 +30,18 @@ public final class AxRankMenu extends AxPlugin {
     public static MessageUtils MESSAGEUTILS;
     private static AxPlugin instance;
     private static AxMetrics metrics;
+    private static RequirementService requirementService;
 
     public static AxPlugin getInstance() {
         return instance;
+    }
+
+    public static RequirementService getRequirementService() {
+        return requirementService;
+    }
+
+    public static RankRequirementRegistry getRequirementRegistry() {
+        return requirementService;
     }
 
     public void enable() {
@@ -45,6 +57,8 @@ public final class AxRankMenu extends AxPlugin {
         }
 
         MESSAGEUTILS = new MessageUtils(LANG.getBackingDocument(), "prefix", CONFIG.getBackingDocument());
+        requirementService = new RequirementService();
+        requirementService.reload();
 
         Commands.registerCommand();
 
@@ -62,6 +76,7 @@ public final class AxRankMenu extends AxPlugin {
     public void disable() {
         if (metrics != null) metrics.cancel();
         GuiUpdater.stop();
+        RankGui.closeAll();
     }
 
     public void updateFlags() {

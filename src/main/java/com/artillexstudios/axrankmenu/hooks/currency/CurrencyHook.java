@@ -11,7 +11,7 @@ public interface CurrencyHook {
 
     double getBalance(Player p);
 
-    void giveBalance(Player p, double amount);
+    boolean giveBalance(Player p, double amount);
 
-    void takeBalance(Player p, double amount);
+    boolean takeBalance(Player p, double amount);
 }

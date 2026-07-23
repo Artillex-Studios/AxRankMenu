@@ -16,6 +16,32 @@ reload:
 buy:
   no-currency: "&#FF3333You don't have enough money to buy this rank!"
 
+requirements:
+  not-met: "&#FF3333You do not meet all requirements for this rank. &7(%requirement%)"
+  unavailable: "&#FF3333The &f%requirement% &#FF3333requirement is currently unavailable."
+  currency-unavailable: "&#FF3333The configured currency is currently unavailable."
+  insufficient-currency: "&#FF3333You need more currency. &7(%current%/%required%)"
+  insufficient-island: "&#FF3333Your island does not meet this requirement. &7(%current%/%required%)"
+  insufficient-playtime: "&#FF3333You need more active playtime. &7(%current%/%required%)"
+  insufficient-xp-level: "&#FF3333You do not have enough experience levels. &7(%current%/%required%)"
+  insufficient-xp-points: "&#FF3333You do not have enough experience points. &7(%current%/%required%)"
+  missing-permission: "&#FF3333You do not meet the permission requirement."
+  invalid-group: "&#FF3333You do not meet the group requirement."
+  placeholder-unreadable: "&#FF3333A required value could not be read. Please contact an administrator."
+  invalid-expression: "&#FF3333A configured requirement expression is invalid."
+  invalid-statistic: "&#FF3333The configured playtime statistic is invalid."
+  no-island: "&#FF3333You must have an island to purchase this rank."
+  superior-unavailable: "&#FF3333The island service is currently unavailable."
+  consume-unsupported: "&#FF3333The &f%requirement% &#FF3333requirement cannot be consumed safely."
+  consume-failed: "&#FF3333A required resource could not be deducted. Nothing was charged."
+  rank-grant-failed: "&#FF3333The rank could not be granted. Nothing was charged."
+  rank-grant-rolled-back: "&#FF3333The rank could not be granted and all supported deductions were refunded."
+  transaction-in-progress: "&#FFAA33Your previous rank purchase is still being processed."
+  success: "&#33FF33You successfully ranked up to &f%rank%&#33FF33."
+  status:
+    met: "&#33FF33Met"
+    not-met: "&#FF3333Not met"
+
 add-rank: "&#33FF33You have added the &f%rank% &#33FF33rank to the gui! &7Now go to the plugins/AxRankMenu/ranks.yml file to edit it!"
 
 error:
@@ -35,4 +61,4 @@ commands:
 update-notifier: "&#FFEE88There is a new version of AxRankMenu available! &#DDDDDD(&#FFFFFFcurrent: &#FF0000%current% &#DDDDDD| &#FFFFFFlatest: &#00FF00%latest%&#DDDDDD)"
 
 # do not change
-version: 5
+version: 6

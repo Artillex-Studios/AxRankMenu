@@ -3,7 +3,7 @@
 
     <groupId>com.artillexstudios</groupId>
     <artifactId>AxRankMenu</artifactId>
-    <version>1.16.0</version>
+    <version>1.17.0</version>
     <packaging>jar</packaging>
 
     <name>AxRankMenu</name>
@@ -35,6 +35,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
                                     <pattern>com.artillexstudios.axapi</pattern>
@@ -52,6 +53,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
             </plugin>
         </plugins>
         <resources>
@@ -95,6 +101,14 @@
         <repository>
             <id>techscode</id>
             <url>https://repo.techscode.com/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>bg-software</id>
+            <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
+        <repository>
+            <id>nightexpress</id>
+            <url>https://repo.nightexpressdev.com/releases</url>
         </repository>
     </repositories>
 
@@ -150,13 +164,6 @@
             <scope>system</scope>
         </dependency>
         <dependency>
-            <groupId>su.nightexpress.excellenteconomy</groupId>
-            <artifactId>ExcellentEconomy</artifactId>
-            <version>2.7.0</version>
-            <systemPath>${project.basedir}/libs/ExcellentEconomy-2.7.0.jar</systemPath>
-            <scope>system</scope>
-        </dependency>
-        <dependency>
             <groupId>me.qKing12.RoyaleEconomy</groupId>
             <artifactId>RoyaleEconomy</artifactId>
             <version>1.4.4</version>
@@ -182,23 +189,28 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.TechsCode</groupId>
-            <artifactId>UltraEconomyAPI</artifactId>
-            <version>2.6.4</version>
+            <groupId>com.bgsoftware</groupId>
+            <artifactId>SuperiorSkyblockAPI</artifactId>
+            <version>2026.2</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.mraxetv.beasttokens</groupId>
-            <artifactId>BeastTokens</artifactId>
-            <version>3.13.3</version>
-            <systemPath>${project.basedir}/libs/bt-api-3.13.3.jar</systemPath>
-            <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
             <version>8.5.12</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.13.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.19.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

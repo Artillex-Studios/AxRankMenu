@@ -1,32 +1,25 @@
 package com.artillexstudios.axrankmenu.gui;
 
-import com.artillexstudios.axapi.executor.ExceptionReportingScheduledThreadPool;
+import com.artillexstudios.axapi.scheduler.ScheduledTask;
+import com.artillexstudios.axapi.scheduler.Scheduler;
 import com.artillexstudios.axrankmenu.gui.impl.RankGui;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+public final class GuiUpdater {
+    private static ScheduledTask task;
 
-public class GuiUpdater {
-    private static ScheduledExecutorService service = null;
+    private GuiUpdater() {
+    }
 
     public static void start() {
-        if (service != null) service.shutdown();
-
-        service = new ExceptionReportingScheduledThreadPool(1);
-        service.scheduleAtFixedRate(() -> {
-            try {
-                for (RankGui gui : RankGui.getOpenMenus()) {
-                    gui.open();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }, 1, 1, TimeUnit.SECONDS);
+        stop();
+        task = Scheduler.get().runTimer(() -> {
+            for (RankGui gui : RankGui.getOpenMenus()) gui.refresh();
+        }, 20L, 20L);
     }
 
     public static void stop() {
-        if (service == null) return;
-        service.shutdown();
+        if (task == null) return;
+        task.cancel();
+        task = null;
     }
 }

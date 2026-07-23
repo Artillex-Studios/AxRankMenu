@@ -21,6 +21,22 @@ VIP:
   currency: Vault
   # where the item should be in the /ranks gui?
   slot: 12
+  # Optional multi-resource requirements. Old ranks without this section keep working.
+  # requirements:
+  #   mode: ALL
+  #   entries:
+  #     playtime:
+  #       type: statistic
+  #       statistic: PLAY_ONE_MINUTE
+  #       unit: hours
+  #       amount: 12
+  #       operator: ">="
+  #       consume: false
+  #     xp:
+  #       type: minecraft-xp-level
+  #       amount: 25
+  #       operator: ">="
+  #       consume: true
   item:
     type: "LIME_BANNER"
     name: "&#00FF00&lVIP &fRANK"
@@ -34,7 +50,6 @@ VIP:
       - "&#00FF00&l(!) &#00FF00Click here to purchase!"
   buy-actions:
     - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
-    - "[CONSOLE] lp user %player% parent set VIP"
     - "[CLOSE] menu"
 
 MVP:
@@ -56,7 +71,6 @@ MVP:
       - "&#00FFFF&l(!) &#00FFFFClick here to purchase!"
   buy-actions:
     - "[MESSAGE] &#00EE00You have purchased the &f%name%&#00EE00! &7(%rank%)"
-    - "[CONSOLE] lp user %player% parent set MVP"
     - "[CLOSE] menu"
 
 # you can add as many decorations as you would like
@@ -67,4 +81,4 @@ SOME-DECORATION:
     name: " "
 
 # do not change
-version: 1
+version: 2
