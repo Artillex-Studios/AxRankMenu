@@ -12,6 +12,8 @@ import com.artillexstudios.axapi.metrics.AxMetrics;
 import com.artillexstudios.axapi.scheduler.Scheduler;
 import com.artillexstudios.axapi.utils.MessageUtils;
 import com.artillexstudios.axapi.utils.featureflags.FeatureFlags;
+import com.artillexstudios.axapi.utils.file.FileUtils;
+import com.artillexstudios.axapi.utils.logging.LoggerNameFormat;
 import com.artillexstudios.axrankmenu.commands.Commands;
 import com.artillexstudios.axrankmenu.gui.GuiUpdater;
 import com.artillexstudios.axrankmenu.hooks.HookManager;
@@ -32,6 +34,20 @@ public final class AxRankMenu extends AxPlugin {
         return instance;
     }
 
+    @Override
+    public void load() {
+        // remove legacy libs
+        File libs = new File(getDataFolder(), "libs");
+        if (libs.exists()) {
+            FileUtils.deleteNested(libs.toPath());
+        }
+        File lib = new File(getDataFolder(), "lib");
+        if (lib.exists()) {
+            FileUtils.deleteNested(lib.toPath());
+        }
+    }
+
+    @Override
     public void enable() {
         instance = this;
 
@@ -59,12 +75,14 @@ public final class AxRankMenu extends AxPlugin {
         if (CONFIG.getBoolean("update-notifier.enabled", true)) new UpdateNotifier();
     }
 
+    @Override
     public void disable() {
         if (metrics != null) metrics.cancel();
         GuiUpdater.stop();
     }
 
+    @Override
     public void updateFlags() {
-        FeatureFlags.USE_LEGACY_HEX_FORMATTER.set(true);
+        FeatureFlags.LOGGER_NAME_FORMAT.set(LoggerNameFormat.NAMEABLE);
     }
 }
